@@ -3,7 +3,7 @@
 A LimeSurvey plugin to enable overriding survey template for participants via URL paramater.
 
 # Requirements
-//TODO (not released yet)
+Requires minimum LimeSurvey version 2.63.0.
 
 # Usage
 ##1 Install and activate plugin
