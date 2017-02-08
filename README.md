@@ -14,6 +14,7 @@ Go to survey plugin settings.
 1. Enable loading templates from URLs
 2. Set used url parameter values and respective template names as json setting.
 3. Set url parameter name that is used to get the template key.
+![example settings](images/limesurvey-url-templates.png)
 
 ##3 Use URL parameter to fire the template referred in settings
 
