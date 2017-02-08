@@ -93,7 +93,7 @@ class UrlTemplateChanger extends \ls\pluginmanager\PluginBase {
         $paramName = ($this->get('paramName', 'Survey', $event->get('survey')) ? $this->get('paramName', 'Survey', $event->get('survey')) : 'template');
 
         $event->set("surveysettings.{$this->id}", array(
-            'name' => 'URL Template changer',
+            'name' => get_class($this),
             'settings' => array(
                 'enabled' => array(
                     'type' => 'boolean',
