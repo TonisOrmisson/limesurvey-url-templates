@@ -14,9 +14,8 @@ class UrlTemplateChanger extends \ls\pluginmanager\PluginBase {
 
     protected $templates;
 
-    public function __construct(PluginManager $manager, $id) {
-        parent::__construct($manager, $id);
-
+    /* Regsiter plugin on events*/
+    public function init() {
         $this->subscribe('afterFindSurvey');
         $this->subscribe('beforeSurveySettings');
         $this->subscribe('newSurveySettings');
