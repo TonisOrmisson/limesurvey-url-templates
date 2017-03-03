@@ -14,12 +14,11 @@ class UrlTemplateChanger extends \ls\pluginmanager\PluginBase {
 
     protected $templates;
 
-    /* Regsiter plugin on events*/
+    /* Register plugin on events*/
     public function init() {
         $this->subscribe('afterFindSurvey');
         $this->subscribe('beforeSurveySettings');
         $this->subscribe('newSurveySettings');
-
     }
 
     public function afterFindSurvey(){
