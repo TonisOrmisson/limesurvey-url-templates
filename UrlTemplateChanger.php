@@ -14,28 +14,7 @@ class UrlTemplateChanger extends \ls\pluginmanager\PluginBase {
 
     protected $templates;
 
-    protected $settings = array(
-        'test' => array(
-            'type' => 'string',
-            'label' => 'Message'
-        ),
-        'messages' => array(
-            'type' => 'list',
-            'label' => 'messages',
-            'items' => array(
-                'number' => array(
-                    'type' => 'int',
-                    'label' => 'Index'
-                ),
-                'message' => array(
-                    'type' => 'string',
-                    'label' => 'Message'
-                ),
-
-            )
-        )
-    );
-
+    /* Regsiter plugin on events*/
     public function init() {
         $this->subscribe('afterFindSurvey');
         $this->subscribe('beforeSurveySettings');
