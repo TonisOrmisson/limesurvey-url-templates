@@ -36,9 +36,7 @@ class UrlTemplateChanger extends \ls\pluginmanager\PluginBase {
         )
     );
 
-    public function __construct(PluginManager $manager, $id) {
-        parent::__construct($manager, $id);
-
+    public function init() {
         $this->subscribe('afterFindSurvey');
         $this->subscribe('beforeSurveySettings');
         $this->subscribe('newSurveySettings');
