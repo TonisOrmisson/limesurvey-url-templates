@@ -1,5 +1,5 @@
 {
-    "name": "TonisOrmisson/limesurvey-url-templates",
+    "name": "tonisormisson/limesurvey-url-templates",
     "description": "LimeSurvey plugin to enable loading templates via URL paramaters",
     "keywords": ["limesurvey","templates"],
     "homepage": "https://github.com/TonisOrmisson/limesurvey-url-templates",
