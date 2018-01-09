@@ -9,7 +9,7 @@
 class UrlTemplateChanger extends PluginBase {
 
     protected $storage = 'DbStorage';
-    static protected $description = 'A Template to override participant survey template via URL param';
+    static protected $description = 'A plugin to override participant survey template via URL param';
     static protected $name = 'URL Template changer';
 
     protected $templates;
