@@ -6,7 +6,7 @@
  * @author Tõnis Ormisson <tonis@andmemasin.eu>
  * @since 2.63.0.
  */
-class UrlTemplateChanger extends \ls\pluginmanager\PluginBase {
+class UrlTemplateChanger extends PluginBase {
 
     protected $storage = 'DbStorage';
     static protected $description = 'A Template to override participant survey template via URL param';
