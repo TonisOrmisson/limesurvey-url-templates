@@ -77,6 +77,11 @@ class UrlTemplateChanger extends PluginBase {
                     'default'=>true,
                     'current' => $this->get('enabled', 'Survey', $event->get('survey'))
                 ),
+                'paramName' => array(
+                    'type' => 'string',
+                    'label' => 'URL parameter name that triggers template change',
+                    'current' => $paramName,
+                ),
                 'info' => array(
                     'type' => 'info',
                     'content'=> 'Set Template names matching key that represents the URL template parameter',
@@ -84,11 +89,6 @@ class UrlTemplateChanger extends PluginBase {
                 'templates' => array(
                     'type' => 'json',
                     'current' => $templates,
-                ),
-                'paramName' => array(
-                    'type' => 'string',
-                    'label' => 'URL parameter name that triggers template change',
-                    'current' => $paramName,
                 ),
             )
         ));
