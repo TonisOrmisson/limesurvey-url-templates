@@ -52,15 +52,15 @@ class UrlTemplateChanger extends PluginBase {
         $defaultTemplates = (object) array(
             "business"=>array(
                 "description" => "My business template",
-                "template"=> "default",
+                "template"=> "vanilla",
             ),
             "fancy"=> array(
                 "description" => "My Fancy template",
-                "template" => "ubuntu_orange",
+                "template" => "bootswatch",
             ),
             "funny"=>array(
                 "description" => "My funny template",
-                "template" => "news_paper",
+                "template" => "fruity",
             )
         );
 

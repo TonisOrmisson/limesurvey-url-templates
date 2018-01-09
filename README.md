@@ -9,6 +9,7 @@ Requires minimum LimeSurvey version 2.63.0.
 ##1 Install 
 
 ### via console
+
 Change to LS plugins folder:
 ```
 $ cd /your/limesurvey/path/plugins
