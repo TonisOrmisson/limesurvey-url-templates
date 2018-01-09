@@ -6,9 +6,22 @@ A LimeSurvey plugin to enable overriding survey template for participants via UR
 Requires minimum LimeSurvey version 2.63.0.
 
 # Usage
-##1 Install and activate plugin
+##1 Install 
 
-##2 Set allowed templates & keys in survey settings:
+### via console
+Change to LS plugins folder:
+```
+$ cd /your/limesurvey/path/plugins
+```
+Use git to clone into folder `UrlTemplateChanger`:
+```
+$ git clone https://github.com/TonisOrmisson/limesurvey-url-templates.git UrlTemplateChanger
+```
+
+
+##2 Activate plugin
+
+##3 Set allowed templates & keys in survey settings:
 Go to survey plugin settings.
 
 1. Enable loading templates from URLs
@@ -16,7 +29,7 @@ Go to survey plugin settings.
 3. Set url parameter name that is used to get the template key.
 ![example settings](images/limesurvey-url-templates.png)
 
-##3 Use URL parameter to fire the template referred in settings
+##4 Use URL parameter to fire the template referred in settings
 
 ###Url structure:
 * <https://example.com/LimeSurvey/survey/index/sid/{SID}/token/{token}/lang/{lang}/newtest/Y/{templateparam}/{template-key}/>
