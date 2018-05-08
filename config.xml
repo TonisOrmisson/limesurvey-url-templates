@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <metadata>
+        <name>UrlTemplateChanger</name>
+        <type>plugin</type>
+        <creationDate>2017-02-07</creationDate>
+        <last_update>2018-05-08</last_update>
+        <author>Tõnis Ormisson</author>
+        <authorUrl>https://andmemasin.eu</authorUrl>
+        <license>GNU General Public License version 2 or later</license>
+        <version>2.1.0</version>
+        <description><![CDATA[Core: Enable overriding survey template for participants via URL paramater.]]></description>
+    </metadata>
+
+    <compatibility>
+        <version>4.0</version>
+        <version>3.0</version>
+    </compatibility>
+</config>
