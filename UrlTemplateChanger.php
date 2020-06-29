@@ -14,6 +14,12 @@ class UrlTemplateChanger extends PluginBase {
 
     protected $templates;
 
+    /** @var Survey */
+    private $survey;
+
+    const SESSION_KEY = "UrlTemplateChanger";
+
+
     /* Register plugin on events*/
     public function init() {
         $this->subscribe('afterFindSurvey');
@@ -22,21 +28,67 @@ class UrlTemplateChanger extends PluginBase {
     }
 
     public function afterFindSurvey(){
-        $event = $this->event;
-        $templatesEnabled = boolval($this->get("enabled",'Survey',$event->get('surveyid')));
-        $paramName = $this->get("paramName",'Survey',$event->get('surveyid'));
+        $this->loadSurvey();
+        if(empty($this->survey)) {
+            return;
+        }
+        $surveyId = $this->survey->primaryKey;
 
-        if($templatesEnabled){
-            $templateKey = $this->api->getRequest()->getQuery($paramName);
-            $possibleTemplates = json_decode($this->get("templates",'Survey',$event->get('surveyid')));
-            if(isset($possibleTemplates->{$templateKey})){
-                $templateName = $possibleTemplates->{$templateKey}->template;
-                $allTemplates = array_keys($this->api->getTemplateList());
-                if(in_array($templateName,$allTemplates)){
-                    $this->event->set('template',$templateName);
-                }
+        $templatesEnabled = boolval($this->get("enabled",'Survey', $surveyId));
+        if(!$templatesEnabled) {
+            return;
+        }
+
+        $paramName = $this->get("paramName",'Survey', $surveyId);
+        if(empty($paramName)) {
+            return;
+        }
+
+        $templateKey = $this->api->getRequest()->getQuery($paramName);
+
+        if (!empty($templateKey)) {
+            Yii::app()->session[$this->sessionKey()] = $templateKey;
+        }
+
+        $templateKey = Yii::app()->session[$this->sessionKey()];
+
+        $possibleTemplates = json_decode($this->get("templates",'Survey', $surveyId));
+        if(isset($possibleTemplates->{$templateKey})){
+            $templateName = $possibleTemplates->{$templateKey}->template;
+            $allTemplates = array_keys($this->api->getTemplateList());
+            if(in_array($templateName,$allTemplates)){
+                $this->event->set('template',$templateName);
             }
         }
+    }
+
+    private function sessionKey()
+    {
+        return self::SESSION_KEY."::" . $this->survey->primaryKey;
+    }
+
+    private function loadSurvey()
+    {
+        $event = $this->event;
+        $surveyId = $event->get('surveyid');
+
+        /**
+         * NB need rto do it without find() since the code at hand is itself run
+         * after find() rsulting in infinite loop
+         */
+        $query = Yii::app()->db->createCommand()
+            ->select('*')
+            ->from(Survey::model()->tableName())
+            ->where('sid=:sid')
+            ->bindParam(':sid', $surveyId, PDO::PARAM_STR);
+        $surveyArray = $query->queryRow();
+
+        if(empty($surveyArray)) {
+            return;
+        }
+        $this->survey = (new Survey());
+        $this->survey->attributes = $surveyArray;
+
     }
 
 

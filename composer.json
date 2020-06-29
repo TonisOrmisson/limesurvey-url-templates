@@ -18,11 +18,14 @@
         }
     ],
     "require": {
-        "limesurvey/limesurvey": "~3.0"
+        "php": ">=7.0",
+        "limesurvey/limesurvey": "~3.0",
+        "ext-json": "*",
+        "ext-pdo": "*"
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.0.x-dev"
+            "dev-master": "2.2.x-dev"
         }
     }
 }
