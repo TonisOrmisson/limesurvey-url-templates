@@ -17,6 +17,12 @@
             "role": "Developer"
         }
     ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ],
     "require": {
         "php": ">=7.0",
         "limesurvey/limesurvey": "~3.0",
