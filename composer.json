@@ -4,7 +4,7 @@
     "keywords": ["limesurvey","templates"],
     "homepage": "https://github.com/TonisOrmisson/limesurvey-url-templates",
     "type": "limesurvey-plugin",
-    "license": "GPL-2.0-only",
+    "license": "GPL-2.0",
     "support": {
         "issues": "https://github.com/TonisOrmisson/limesurvey-url-templates/issues",
         "source": "https://github.com/TonisOrmisson/limesurvey-url-templates"

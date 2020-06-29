@@ -25,46 +25,70 @@ class UrlTemplateChanger extends PluginBase {
         $this->subscribe('afterFindSurvey');
         $this->subscribe('beforeSurveySettings');
         $this->subscribe('newSurveySettings');
+
+        $this->subscribe('beforeResponseSave');
+    }
+    public function beforeResponseSave()
+    {
+        $oEvent = $this->getEvent();
+        $this->log("survey id is : ".$oEvent->get('surveyId'));
+        tracevar("survey id is : ".$oEvent->get('surveyId'));
+        $response = $oEvent->get('model');
+        $this->log("response id is : ".$response->id);
+        tracevar("response id is : ".$response->id);
     }
 
-    public function afterFindSurvey(){
+    public function afterResponseSave()
+    {
+        $oEvent = $this->getEvent();
+        $this->log("survey id is : ".$oEvent->get('surveyId'));
+        tracevar("survey id is : ".$oEvent->get('surveyId'));
+        $response = $oEvent->get('model');
+        $this->log("response id is : ".$response->id);
+        tracevar("response id is : ".$response->id);
+        die("im here");
+    }
+    public function afterFindSurvey() {
         $this->loadSurvey();
-        if(empty($this->survey)) {
+        if (empty($this->survey)) {
             return;
         }
         $surveyId = $this->survey->primaryKey;
+        tracevar("testing 123");
 
-        $templatesEnabled = boolval($this->get("enabled",'Survey', $surveyId));
-        if(!$templatesEnabled) {
+        $templatesEnabled = boolval($this->get("enabled", 'Survey', $surveyId));
+        if (!$templatesEnabled) {
             return;
         }
 
-        $paramName = $this->get("paramName",'Survey', $surveyId);
-        if(empty($paramName)) {
+        $paramName = $this->get("paramName", 'Survey', $surveyId);
+        if (empty($paramName)) {
             return;
         }
 
         $templateKey = $this->api->getRequest()->getQuery($paramName);
-        $possibleTemplates = json_decode($this->get("templates",'Survey', $surveyId));
+        $possibleTemplates = json_decode($this->get("templates", 'Survey', $surveyId));
         $possibleTemplateKeys = array_keys((array) $possibleTemplates);
 
         if (!empty($templateKey) and in_array($templateKey, $possibleTemplateKeys)) {
             Yii::app()->session[$this->sessionKey()] = $templateKey;
         }
+        if(empty($templateKey)) {
+            return;
+        }
 
         $templateKey = Yii::app()->session[$this->sessionKey()];
-
         $templateName = $possibleTemplates->{$templateKey}->template;
         $allTemplates = array_keys($this->api->getTemplateList());
 
-        if(in_array($templateName,$allTemplates)){
-            $this->event->set('template',$templateName);
+        if (in_array($templateName, $allTemplates)) {
+            $this->event->set('template', $templateName);
         }
     }
 
     private function sessionKey()
     {
-        return self::SESSION_KEY."::" . $this->survey->primaryKey;
+        return self::SESSION_KEY."::".$this->survey->primaryKey;
     }
 
     private function loadSurvey()
@@ -83,7 +107,7 @@ class UrlTemplateChanger extends PluginBase {
             ->bindParam(':sid', $surveyId, PDO::PARAM_STR);
         $surveyArray = $query->queryRow();
 
-        if(empty($surveyArray)) {
+        if (empty($surveyArray)) {
             return;
         }
         $this->survey = (new Survey());
@@ -154,7 +178,7 @@ class UrlTemplateChanger extends PluginBase {
         {
             $this->set($name, $value, 'Survey', $event->get('survey'));
         }
-        $this->set('myTemplates', $event->get('settings')['templates'],'Survey',$event->get('survey'));
+        $this->set('myTemplates', $event->get('settings')['templates'], 'Survey', $event->get('survey'));
     }
 
 }
