@@ -25,7 +25,6 @@
     ],
     "require": {
         "php": ">=7.0",
-        "limesurvey/limesurvey": "~3.0",
         "ext-json": "*",
         "ext-pdo": "*"
     },
