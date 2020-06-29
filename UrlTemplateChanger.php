@@ -45,20 +45,20 @@ class UrlTemplateChanger extends PluginBase {
         }
 
         $templateKey = $this->api->getRequest()->getQuery($paramName);
+        $possibleTemplates = json_decode($this->get("templates",'Survey', $surveyId));
+        $possibleTemplateKeys = array_keys((array) $possibleTemplates);
 
-        if (!empty($templateKey)) {
+        if (!empty($templateKey) and in_array($templateKey, $possibleTemplateKeys)) {
             Yii::app()->session[$this->sessionKey()] = $templateKey;
         }
 
         $templateKey = Yii::app()->session[$this->sessionKey()];
 
-        $possibleTemplates = json_decode($this->get("templates",'Survey', $surveyId));
-        if(isset($possibleTemplates->{$templateKey})){
-            $templateName = $possibleTemplates->{$templateKey}->template;
-            $allTemplates = array_keys($this->api->getTemplateList());
-            if(in_array($templateName,$allTemplates)){
-                $this->event->set('template',$templateName);
-            }
+        $templateName = $possibleTemplates->{$templateKey}->template;
+        $allTemplates = array_keys($this->api->getTemplateList());
+
+        if(in_array($templateName,$allTemplates)){
+            $this->event->set('template',$templateName);
         }
     }
 
