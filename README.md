@@ -1,6 +1,7 @@
 # limesurvey-url-templates
 
 A LimeSurvey plugin to enable overriding survey template for participants via URL paramater.
+![example settings](images/url-changer.gif)
 
 # Requirements
 Requires minimum LimeSurvey version 3.0.1
