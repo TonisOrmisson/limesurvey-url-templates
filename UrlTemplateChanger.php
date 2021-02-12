@@ -25,27 +25,8 @@ class UrlTemplateChanger extends PluginBase {
         $this->subscribe('afterFindSurvey');
         $this->subscribe('beforeSurveySettings');
         $this->subscribe('newSurveySettings');
-
-        $this->subscribe('beforeResponseSave');
-    }
-    public function beforeResponseSave()
-    {
-        $oEvent = $this->getEvent();
-        $this->log("survey id is : ".$oEvent->get('surveyId'));
-        tracevar("survey id is : ".$oEvent->get('surveyId'));
-        $response = $oEvent->get('model');
-        $this->log("response id is : ".$response->id);
-        tracevar("response id is : ".$response->id);
     }
 
-    public function afterResponseSave()
-    {
-        $oEvent = $this->getEvent();
-        $this->log("survey id is : ".$oEvent->get('surveyId'));
-        tracevar("survey id is : ".$oEvent->get('surveyId'));
-        $response = $oEvent->get('model');
-        $this->log("response id is : ".$response->id);
-    }
 
     public function afterFindSurvey() {
         $this->loadSurvey();
@@ -53,7 +34,6 @@ class UrlTemplateChanger extends PluginBase {
             return;
         }
         $surveyId = $this->survey->primaryKey;
-        tracevar("testing 123");
 
         $templatesEnabled = boolval($this->get("enabled", 'Survey', $surveyId));
         if (!$templatesEnabled) {
