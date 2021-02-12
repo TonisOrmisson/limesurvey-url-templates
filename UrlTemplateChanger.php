@@ -45,9 +45,8 @@ class UrlTemplateChanger extends PluginBase {
         tracevar("survey id is : ".$oEvent->get('surveyId'));
         $response = $oEvent->get('model');
         $this->log("response id is : ".$response->id);
-        tracevar("response id is : ".$response->id);
-        die("im here");
     }
+
     public function afterFindSurvey() {
         $this->loadSurvey();
         if (empty($this->survey)) {
