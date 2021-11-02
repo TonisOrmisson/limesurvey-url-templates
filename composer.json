@@ -29,7 +29,7 @@
         "ext-pdo": "*"
     },
     "require-dev": {
-        "limesurvey/limesurvey": "~3.0.1"
+        "limesurvey/limesurvey": "~3.27.19"
     },
 
     "extra": {
