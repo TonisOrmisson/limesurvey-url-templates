@@ -104,49 +104,49 @@ class UrlTemplateChanger extends PluginBase {
     public function beforeSurveySettings()
     {
         $event = $this->event;
-        $defaultTemplates = (object) array(
-            "business"=>array(
+        $defaultTemplates = (object) [
+            "business"=> [
                 "description" => "My business template",
                 "template"=> "vanilla",
-            ),
-            "fancy"=> array(
+            ],
+            "fancy"=> [
                 "description" => "My Fancy template",
                 "template" => "bootswatch",
-            ),
-            "funny"=>array(
+            ],
+            "funny"=> [
                 "description" => "My funny template",
                 "template" => "fruity",
-            )
-        );
+            ]
+        ];
 
         // set defaults
         $templates = ($this->get('templates', 'Survey', $event->get('survey')) ? $this->get('templates', 'Survey', $event->get('survey')) : json_encode($defaultTemplates));
         $paramName = ($this->get('paramName', 'Survey', $event->get('survey')) ? $this->get('paramName', 'Survey', $event->get('survey')) : 'template');
 
-        $event->set("surveysettings.{$this->id}", array(
+        $event->set("surveysettings.{$this->id}", [
             'name' => get_class($this),
-            'settings' => array(
-                'enabled' => array(
+            'settings' => [
+                'enabled' => [
                     'type' => 'boolean',
                     'label' => 'Enable loading templates from URLs',
                     'default'=>true,
                     'current' => $this->get('enabled', 'Survey', $event->get('survey'))
-                ),
-                'paramName' => array(
+                ],
+                'paramName' => [
                     'type' => 'string',
                     'label' => 'URL parameter name that triggers template change',
                     'current' => $paramName,
-                ),
-                'info' => array(
+                ],
+                'info' => [
                     'type' => 'info',
                     'content'=> 'Set Template names matching key that represents the URL template parameter',
-                ),
-                'templates' => array(
+                ],
+                'templates' => [
                     'type' => 'json',
-                    'current' => $templates,
-                ),
-            )
-        ));
+                    'content' => $templates,
+                ],
+            ]
+        ]);
     }
 
 
