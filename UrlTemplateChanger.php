@@ -33,6 +33,7 @@ class UrlTemplateChanger extends PluginBase {
         if (empty($this->survey)) {
             return;
         }
+
         $surveyId = $this->survey->primaryKey;
 
         $templatesEnabled = boolval($this->get("enabled", 'Survey', $surveyId));
@@ -51,9 +52,6 @@ class UrlTemplateChanger extends PluginBase {
 
         if (!empty($templateKey) and in_array($templateKey, $possibleTemplateKeys)) {
             Yii::app()->session[$this->sessionKey()] = $templateKey;
-        }
-        if(empty($templateKey)) {
-            return;
         }
 
         $templateKey = Yii::app()->session[$this->sessionKey()];
@@ -119,9 +117,15 @@ class UrlTemplateChanger extends PluginBase {
             ]
         ];
 
+        //var_dump($this->get('templates'));die;
+        //var_dump($this->get('templates', 'Survey', $event->get('survey')));die;
+
         // set defaults
-        $templates = ($this->get('templates', 'Survey', $event->get('survey')) ? $this->get('templates', 'Survey', $event->get('survey')) : json_encode($defaultTemplates));
-        $paramName = ($this->get('paramName', 'Survey', $event->get('survey')) ? $this->get('paramName', 'Survey', $event->get('survey')) : 'template');
+        $surveyTemplates = $this->get('templates', 'Survey', $event->get('survey'));
+        $surveyParamName = $this->get('paramName', 'Survey', $event->get('survey'));
+        $templates = !empty($surveyTemplates) ? $surveyTemplates : json_encode($defaultTemplates);
+        $paramName = !empty($surveyParamName) ? $surveyParamName : 'template';
+
 
         $event->set("surveysettings.{$this->id}", [
             'name' => get_class($this),
@@ -143,7 +147,7 @@ class UrlTemplateChanger extends PluginBase {
                 ],
                 'templates' => [
                     'type' => 'json',
-                    'content' => $templates,
+                    'current' => $templates,
                 ],
             ]
         ]);
