@@ -8,11 +8,13 @@
         <author>Tõnis Ormisson</author>
         <authorUrl>https://andmemasin.eu</authorUrl>
         <license>GNU General Public License version 2 or later</license>
-        <version>2.1.0</version>
-        <description><![CDATA[Core: Enable overriding survey template for participants via URL paramater.]]></description>
+        <version>2.2.0</version>
+        <description>Enable overriding survey template for participants via URL paramater</description>
     </metadata>
 
     <compatibility>
+        <version>6.0</version>
+        <version>5.0</version>
         <version>4.0</version>
         <version>3.0</version>
     </compatibility>

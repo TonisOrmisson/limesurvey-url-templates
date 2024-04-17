@@ -75,7 +75,7 @@ class UrlTemplateChanger extends PluginBase {
 
         /**
          * NB need rto do it without find() since the code at hand is itself run
-         * after find() rsulting in infinite loop
+         * after find() resulting in infinite loop
          */
         $query = Yii::app()->db->createCommand()
             ->select('*')
