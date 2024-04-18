@@ -23,14 +23,25 @@ class UrlTemplateChanger extends PluginBase {
     /* Register plugin on events*/
     public function init() {
         $this->subscribe('afterFindSurvey');
+        $this->subscribe('beforeGetTemplate');
         $this->subscribe('beforeSurveySettings');
         $this->subscribe('newSurveySettings');
     }
 
+    public function afterFindSurvey()
+    {
+        Yii::log("#########afterFindSurvey ", "trace", $this->logCategory());
+        $this->beforeGetTemplate();
+    }
 
-    public function afterFindSurvey() {
+
+    public function beforeGetTemplate()
+    {
+
+        Yii::log("#########beforeSurveyPage ", "trace", $this->logCategory());
         $this->loadSurvey();
         if (empty($this->survey)) {
+            Yii::log("No survey, skipping ", "trace", $this->logCategory());
             return;
         }
 
@@ -38,14 +49,17 @@ class UrlTemplateChanger extends PluginBase {
 
         $templatesEnabled = boolval($this->get("enabled", 'Survey', $surveyId));
         if (!$templatesEnabled) {
+            Yii::log("template switching disabled, skipping ", "trace", $this->logCategory());
             return;
         }
 
         $paramName = $this->get("paramName", 'Survey', $surveyId);
         if (empty($paramName)) {
+            Yii::log("url paramName missing, skipping", "trace", $this->logCategory());
             return;
         }
 
+        Yii::log("Looking for template key", "trace", $this->logCategory());
         $templateKey = $this->api->getRequest()->getQuery($paramName);
         $possibleTemplates = json_decode($this->get("templates", 'Survey', $surveyId));
         $possibleTemplateKeys = array_keys((array) $possibleTemplates);
@@ -56,16 +70,24 @@ class UrlTemplateChanger extends PluginBase {
         }
 
         if(!isset(Yii::app()->session[$this->sessionKey()])) {
+            Yii::log("Session template-key missing, skipping", "trace", $this->logCategory());
             return;
         }
 
         $templateKey = Yii::app()->session[$this->sessionKey()];
+        Yii::log("Looking for the template by key $templateKey", "trace", $this->logCategory());
         $templateName = $possibleTemplates->{$templateKey}->template;
+        Yii::log("Looking for the template $templateName", "trace", $this->logCategory());
         $allTemplates = array_keys($this->api->getTemplateList());
 
         if (in_array($templateName, $allTemplates)) {
+            $templateKey = array_search($templateName, $allTemplates);
+            Yii::log("SETTING template $templateName", "info", $this->logCategory());
             $this->event->set('template', $templateName);
+        } else {
+            Yii::log("did not find template $templateName", "info", $this->logCategory());
         }
+
     }
 
     private function sessionKey()
@@ -75,11 +97,25 @@ class UrlTemplateChanger extends PluginBase {
 
     private function loadSurvey()
     {
-        $event = $this->event;
-        $surveyId = $event->get('surveyid');
+        Yii::log("Loading survey", "trace",  $this->logCategory());
+
+        $event = $this->event; // beforeSurveyPage;
+        $possibleSurveyIdParameterNames = ['surveyid', 'surveyId', 'survey'];
+
+        foreach ($possibleSurveyIdParameterNames as $possibleSurveyIdParameterName) {
+            $surveyId = $event->get($possibleSurveyIdParameterName);
+            if(!empty($surveyId)) {
+                Yii::log("Found surveyId:" . $surveyId, "trace",  $this->logCategory());
+                break;
+            }
+        }
+        if(empty($surveyId)) {
+            Yii::log("SurveyId not found:" . $surveyId, "trace",  $this->logCategory());
+            return;
+        }
 
         /**
-         * NB need rto do it without find() since the code at hand is itself run
+         * NB need to do it without find() since the code at hand is itself run
          * after find() resulting in infinite loop
          */
         $query = Yii::app()->db->createCommand()
@@ -90,12 +126,15 @@ class UrlTemplateChanger extends PluginBase {
         $surveyArray = $query->queryRow();
 
         if (empty($surveyArray)) {
+            Yii::log("Got empty survey:$surveyId", "info",  $this->logCategory());
             return;
         }
+        Yii::log("Creating a survey from array", "trace",  $this->logCategory());
         $this->survey = (new Survey());
         $this->survey->attributes = $surveyArray;
 
     }
+
 
 
 
@@ -106,6 +145,8 @@ class UrlTemplateChanger extends PluginBase {
      */
     public function beforeSurveySettings()
     {
+        Yii::log("beforeSurveySettings ", "trace", $this->logCategory());
+
         $event = $this->event;
         $defaultTemplates = (object) [
             "business"=> [
@@ -119,7 +160,7 @@ class UrlTemplateChanger extends PluginBase {
             "funny"=> [
                 "description" => "My funny template",
                 "template" => "fruity",
-            ]
+            ],
         ];
 
         //var_dump($this->get('templates'));die;
@@ -139,7 +180,7 @@ class UrlTemplateChanger extends PluginBase {
                     'type' => 'boolean',
                     'label' => 'Enable loading templates from URLs',
                     'default'=>true,
-                    'current' => $this->get('enabled', 'Survey', $event->get('survey'))
+                    'current' => $this->get('enabled', 'Survey', $event->get('survey')),
                 ],
                 'paramName' => [
                     'type' => 'string',
@@ -154,7 +195,7 @@ class UrlTemplateChanger extends PluginBase {
                     'type' => 'json',
                     'current' => $templates,
                 ],
-            ]
+            ],
         ]);
     }
 
@@ -168,5 +209,11 @@ class UrlTemplateChanger extends PluginBase {
         }
         $this->set('myTemplates', $event->get('settings')['templates'], 'Survey', $event->get('survey'));
     }
+
+    private function logCategory()
+    {
+        return "andmemasin\\".__CLASS__;
+    }
+
 
 }

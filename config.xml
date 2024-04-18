@@ -9,7 +9,7 @@
         <authorUrl>https://andmemasin.eu</authorUrl>
         <license>GNU General Public License version 2 or later</license>
         <version>2.3.0</version>
-        <description>Enable overriding survey template for participants via URL paramater</description>
+        <description>Enable overriding survey template for participants via URL parameter</description>
     </metadata>
 
     <compatibility>
