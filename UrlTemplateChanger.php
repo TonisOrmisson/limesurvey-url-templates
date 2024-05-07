@@ -22,23 +22,34 @@ class UrlTemplateChanger extends PluginBase {
 
     /* Register plugin on events*/
     public function init() {
-        $this->subscribe('afterFindSurvey');
+        //$this->subscribe('afterFindSurvey');
+        //$this->subscribe('beforeGetTemplateInstance');
+
         $this->subscribe('beforeGetTemplate');
         $this->subscribe('beforeSurveySettings');
         $this->subscribe('newSurveySettings');
+        $this->subscribe('beforeSurveyPage');
+    }
+
+    public function beforeSurveyPage()
+    {
+        Yii::log("beforeSurveyPage plugin call", "trace", $this->logCategory());
+
+        $this->beforeGetTemplateInstance();
     }
 
     public function afterFindSurvey()
     {
-        Yii::log("#########afterFindSurvey ", "trace", $this->logCategory());
-        $this->beforeGetTemplate();
+        $event = $this->event;
+        Yii::log("afterFindSurvey plugin call", "trace", $this->logCategory());
+        $this->beforeGetTemplateInstance();
     }
 
 
-    public function beforeGetTemplate()
+    public function beforeGetTemplateInstance()
     {
 
-        Yii::log("#########beforeSurveyPage ", "trace", $this->logCategory());
+        Yii::log("beforeGetTemplateInstance ", "trace", $this->logCategory());
         $this->loadSurvey();
         if (empty($this->survey)) {
             Yii::log("No survey, skipping ", "trace", $this->logCategory());
@@ -162,9 +173,6 @@ class UrlTemplateChanger extends PluginBase {
                 "template" => "fruity",
             ],
         ];
-
-        //var_dump($this->get('templates'));die;
-        //var_dump($this->get('templates', 'Survey', $event->get('survey')));die;
 
         // set defaults
         $surveyTemplates = $this->get('templates', 'Survey', $event->get('survey'));
