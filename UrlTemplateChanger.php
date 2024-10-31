@@ -22,19 +22,16 @@ class UrlTemplateChanger extends PluginBase {
 
     /* Register plugin on events*/
     public function init() {
-        //$this->subscribe('afterFindSurvey');
-        //$this->subscribe('beforeGetTemplateInstance');
 
-        $this->subscribe('beforeGetTemplate');
         $this->subscribe('beforeSurveySettings');
         $this->subscribe('newSurveySettings');
-        $this->subscribe('beforeSurveyPage');
+        $this->subscribe('beforeSurveyPage'); // this does not work due to bug
+        $this->subscribe('afterFindSurvey'); // fall back to this due to beforeSurveyPage bug
     }
 
     public function beforeSurveyPage()
     {
         Yii::log("beforeSurveyPage plugin call", "trace", $this->logCategory());
-
         $this->beforeGetTemplateInstance();
     }
 
